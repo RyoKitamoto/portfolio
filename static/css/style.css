@@ -1,0 +1,25 @@
+#id_search{
+    width:30vw;
+}
+
+
+header {
+    background-image: url('../../../media/tadadesu_pictures/top2.png'); /* ヘッダー画像のパスを指定 */
+    background-size: cover; /* 画面幅に合わせて画像を拡大 */
+    background-position: center; /* 画像を中央に配置 */
+    height: 600px; /* ヘッダーの高さを適切な値に設定 */
+    display: flex;
+    justify-content: space-between; /* メニューとコンテンツを両端に配置 */
+    align-items: center; /* 垂直方向の中央揃え */
+    padding: 0 20px; /* 左右の余白を設定 */
+    color: white; /* テキストカラーを設定 */
+}
+
+.container-fluid{
+    margin-left:auto;
+    margin-right:auto;
+    max-width:1300px;
+}
+.my-padding{
+    padding-top:100px;
+}

@@ -1,0 +1,32 @@
+{% for item in filtered_items %}
+<p>{{item.user.addresses.city}}の出品</p>
+<table style = border:solid;>
+    <tr>
+    <td>商品名</td>
+    <td><a href="{% url 'boards:item_detail' item.item_id %}">{{item.name}}</a></td>
+    </tr>
+    <tr>
+    <td>カテゴリー</td>
+    <td>{{item.category}}</td>
+    </tr>
+    <tr>
+    <td>地域</td>
+    {% if item.user.addresses.city %}
+    <td>{{item.user.addresses.city}}</td>
+    {% else %}
+    <td>未登録</td>
+    {% endif %}
+    </tr>
+    <tr>
+    <td>商品写真</td>
+    <td>
+    {% for picture in item.itempictures_set.all %}
+    <img width=100px; height=100px; src="{{picture.picture.url}}">
+    {% endfor %}
+    </td>
+    </tr>
+    </table>
+    <br>
+{% empty %}
+<p>出品がありません</p>
+{% endfor %}

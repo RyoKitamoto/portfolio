@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+{% block content%}
+<br>
+<h2>出品しよう！</h2>
+<br><hr><br>
+<p>※アイテム画像は複数投稿可能です</p>
+<form method='POST' enctype='multipart/form-data'>
+
+{% csrf_token %}
+{{ form.non_field_errors }}
+<table>
+{% for field in item_create_form %}
+    <tr>
+    <td>{{ field.label }}</td>
+    <td>{{ field }}</td>
+    <td>{{ field.errors }}</td>
+    </tr>
+{% endfor %}
+{% for field in item_picture_create_form %}
+    <tr>
+    <td>{{ field.label }}</td>
+    <td>{{ field }}</td>
+    <td>{{ field.errors }}</td>
+    </tr>
+{% endfor %}
+</table>
+    <br>
+    <input type ="submit" value = "投稿する" class="btn btn-success">
+</form>
+{% endblock %}

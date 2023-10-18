@@ -1,0 +1,49 @@
+{% extends 'base.html'%}
+{% block content%}
+<br>
+<h2>マイページ情報を更新する</h2>
+<br><hr><br>
+<form method='POST' enctype='multipart/form-data'>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <table>
+        {% for field in user_edit_form %}
+            <tr>
+            <td>{{ field.label }}</td>
+            <td>
+                {% if field.name == 'picture' %}
+                <div class='custom-file'>
+                {{ field }}
+                {% comment %} <label class="custom-file-label" for="{{ field.id_for_label }}"></label> {% endcomment %}
+                </div>
+                {% else %}
+                {{field}}
+                {% endif %}
+            </td>
+            <td>{{ field.errors }}</td>
+            </tr>
+        {% endfor %}
+        {% for field in user_address_edit_form %}
+            <tr>
+            <td>{{field.label}}</td>
+            <td>{{field}}</td>
+            <td>{{field.errors}}</td>
+            </tr>
+        {% endfor %}
+            
+        </table>
+        <br>
+    <input type="submit" value='上記の内容で更新する' class="btn btn-success">
+    </form>
+
+<!-- 画像ファイルが選択されたときにファイル名を表示 -->
+<script>
+    document.querySelectorAll('.custom-file-input').forEach(function(input) {
+        input.addEventListener('change', function(e) {
+            var fileName = e.target.files[0].name;
+            var label = e.target.nextElementSibling;
+            label.innerText = fileName;
+        });
+    });
+</script>
+{% endblock %}

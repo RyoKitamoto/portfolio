@@ -1,0 +1,114 @@
+{% extends 'base.html'%}
+{% load paginate %}
+{% block header %}
+<header></header>
+{% endblock%}
+{% block content%}
+{% if user.is_authenticated %}
+<h2>ようこそタダデスへ！</h2>
+<p>こんにちは!  {{request.user.username}}さん</p>
+{% else %}
+<h2>ようこそタダデスへ！</h2>
+<p>こんにちは!  ゲストさん<br>新規登録完了で品物の投稿とお問い合わせができます</p>
+{% endif %}
+<br><hr><br>
+<h3>現在の市町村ごとの出品状況</h3>
+<ul style="display:flex; list-style:none; padding:0;">
+{% for city_item_count in city_items_counts %}
+    <li style="float:left;" class="m-1">{{city_item_count.city}}({{city_item_count.item_count}}件)</li>
+{% endfor%}
+</ul>
+
+
+
+{#検索窓#}
+<table>
+    <tr>
+<form method="get" action="">
+    <td>{{ form.search }}</td>
+    <td>{{ form.category }}</td>
+    <td>
+    <button class="btn btn-success" type="submit">検索</button>
+    </td>
+</form>
+{#検索リセットボタン#}
+<td>
+<form method="get" action="{% url 'boards:top'%}">
+    <button class="btn btn-success" type="submit">リセット</button>
+</form>
+</td>
+</tr>
+</table>
+<br>
+<hr>
+<br>
+
+
+<h5 class="mt-3"> {{ page_obj.paginator.count }}件の検索結果 </h5>
+
+{# 品物カード #}
+<div class="row">
+{% for object in object_list%}
+
+  <div class="card col-6">
+    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light" style="height:300px">
+      <img src="{{object.itempictures_set.first.picture.url}}" class="img-fluid" style="object-fit:cover"/>
+      <a href="{% url 'boards:item_detail' object.item_id %}">
+        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+      </a>
+    </div>
+    <div class="card-body">
+      <h4 class="card-title">{{object.name}}</h4>
+      <p class="card-text">カテゴリー：{{object.category}}</p>
+      <p class="card-text">
+        市町村：
+        {% if object.user.addresses.city %}
+        {{object.user.addresses.city}}
+        {% else %}
+        未登録
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  <br><br>
+{% endfor %}
+</div>
+
+<br>
+{# ページネーション #}
+<nav aria-label="Page navigation">
+    <ul class="pagination text-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?{% url_replace request 'page' page_obj.previous_page_number %}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">前へ</span>
+          </a>
+        </li>
+      {% endif %}
+  
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><a class="page-link" href="?{% url_replace request 'page' num %}">{{ num }}</a></li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <li class="page-item"><a class="page-link" href="?{% url_replace request 'page' num %}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      
+  
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">次へ</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+</nav>
+{% block javascript %}
+
+{% endblock%}
+{% endblock %}

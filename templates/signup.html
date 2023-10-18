@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% block content%}
+<br>
+<h2>新規登録ページ</h2>
+<p>下記項目を入力してください。<br>メールに仮登録用URLをお送りします。</p>
+<p>※品物に問い合わせる際に使うメールアドレスでもありますので連絡可能なメールアドレスを登録してください</p>
+<br><hr><br>
+<form method='POST'>
+{% csrf_token %}
+{{ form.non_field_errors }}
+<table>
+{% for field in form %}
+    <tr>
+    <td>{{ field.label }}</td>
+    <td>{{ field }}</td>
+    <td>{{ field.errors }}</td>
+    </tr>
+{% endfor %}
+</table>
+<br>
+<input type="submit" value='メールを送信する' class="btn btn-success">
+</form>
+{% endblock %}

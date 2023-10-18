@@ -1,0 +1,11 @@
+{% extends 'base.html'%}
+{% block content%}
+<br>
+<h2>出品削除</h2>
+<br><hr><br>
+<p>本当にこの商品を削除しますか？<br>この操作は取り消しできません</p>
+<form method='POST'>
+    {% csrf_token %}
+    <input type ="submit" value = "削除する" class="btn btn-success">
+</form>
+{% endblock %}

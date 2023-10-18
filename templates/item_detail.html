@@ -1,0 +1,112 @@
+{% extends 'base.html'%}
+{% block content%}
+
+
+<h2>{{object.name}} 詳細ページ</h2>
+
+
+<table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+      <tr>
+        <th>出品者</th>
+        <th>カテゴリー</th>
+        <th>市町村</th>
+        <th>出品時間</th>
+      
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="d-flex align-items-center">
+            <a href="{% url 'accounts:user_detail' object.user.user_id %}">
+            <img
+                src="{{object.user.picture.url}}"
+                alt=""
+                style="width: 100px; height: 100px"
+                class="rounded-circle"
+                />
+            <div class="ms-3">
+              <h5 class="fw-bold mb-1">{{object.user.username}}</h5>
+              <p class="text-muted mb-0">
+                {% if object.user.gender == 'man'%}
+                性別：男性
+                {% elif object.user.gender == 'woman'%}
+                性別：女性
+                {% else %}
+                性別：無回答
+                {% endif %}
+              </p>
+            </div>
+            </a>
+          </div>
+        </td>
+        <td>{{object.category}}</td>
+        <td>
+          {% if object.user.addresses%}
+          <p class="fw-normal mb-1">大阪府</p>
+          <p class="text-muted mb-0">{{object.user.addresses.city}}</p>
+          {% else %}
+          <p class="fw-normal mb-1">未登録</p>
+          {% endif%}
+        </td>
+        <td>
+          <p>{{object.created_at}}</p>
+        </td>     
+      </tr>
+    </tbody>
+</table>
+<table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+        <tr>
+            <th>出品コメント</th>
+            <th>現在のお気に入り数</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{object.comment}}</td>
+            <td><p>{{favorite_count}}</p>
+                {% if request.user in object.favorited_by.all %}
+                <a href="{% url 'boards:toggle_favorite' object.item_id %}" class="btn btn-success">お気に入りから削除</a>
+                {% else %}
+                <a href="{% url 'boards:toggle_favorite' object.item_id %}" class="btn btn-success">お気に入りに追加</a>
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+        <tr>
+            <th>品物画像一覧(クリックすると拡大できます)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        {% for picture in object.itempictures_set.all %}
+        <td><a href="{{picture.picture.url}}" data-lightbox="group"><img width=200px; height=200px; src="{{picture.picture.url}}"></a></td>
+        {% endfor %}
+        </tr>
+    </tbody>
+</table>
+<br>
+<p><a href="{% url 'boards:item_contact' object.item_id %}" class="btn btn-success">この商品をお問い合わせする</a></p>
+
+
+
+ 
+
+
+{% block javascript%}
+<script>
+$(document).ready(function(){
+var lightbox = document.getElementById('lightbox');
+var instance = new mdb.Lightbox(lightbox);
+instance.open();
+});
+</script>
+
+{% endblock%}
+{% endblock %}

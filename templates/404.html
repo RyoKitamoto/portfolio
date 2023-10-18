@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content%}
+<br>
+<h5>このページは存在しません</h5>
+<p>戻るボタンを押すか、こちらからトップへ戻ってください</p>
+<a href = "{% url 'boards:top' %}" class="btn btn-success">トップへ</a>
+
+{% endblock %}

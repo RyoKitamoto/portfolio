@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+{% block content%}
+<br>
+<h2>お問い合わせ画面です</h2>
+<br>
+<p>下記の内容で出品者にお問い合わせします</p>
+<p>※初回メールはタダデス事務局より送信され、登録時のメールアドレスを出品者に通知します<br>お問い合わせ後は各自メールにて取引をお願いします</p>
+<br><hr><br>
+<form method='POST'>
+{% csrf_token %}
+{{ form.non_field_errors }}
+<table>
+{% for field in form %}
+    <tr>
+    <td>相手に通知されるメールアドレス：</td>
+    <td>{{user.email}}</td>
+    </tr>
+    <tr>
+    <td>{{ field.label }}</td>
+    <td>{{ field }}</td>
+    <td>{{ field.errors }}</td>
+    </tr>
+{% endfor %}
+</table>
+<br>
+<input type ="submit" value = "上記の内容でお問い合わせする" class="btn btn-success">
+</form>
+{% endblock %}

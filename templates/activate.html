@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+{% block content%}
+<br>
+<h2>アクティベート画面</h2>
+<br><hr><br>
+{% if result %}
+    <p>メール認証が成功しました</p>
+    <p>ようこそ！さっそくログインしましょう</p>
+    <br>
+    <p><a href = "{% url 'accounts:user_login'%}" class="btn btn-success">ログイン</a></p>
+{% else %}
+    <p>無効なリンクです</p>
+    <p>もう一度最初から登録してください</p>
+{% endif %}
+    
+{% endblock %}

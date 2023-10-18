@@ -1,0 +1,76 @@
+{% extends 'base.html'%}
+{% load paginate %}
+
+{% block content%}
+<br>
+<h2>{{request.user.username}}さんが出品中のアイテム</h2>
+<br><hr><br>
+<div class="row">
+    {% for object in object_list%}
+    
+      <div class="card col-4">
+        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light" style="height:200px">
+          <img src="{{object.itempictures_set.first.picture.url}}" class="img-fluid" style="object-fit:cover"/>
+          <a href="{% url 'boards:item_detail' object.item_id %}">
+            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+          </a>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">{{object.name}}</h4>
+          <p class="card-text">カテゴリー：{{object.category}}</p>
+          <p class="card-text">
+            市町村：
+            {% if object.user.addresses.city %}
+            {{object.user.addresses.city}}
+            {% else %}
+            未登録
+            {% endif %}
+          </p>
+          <p class="card-text">
+            <ul style="text-align:right; list-style:none;">
+            <li><a href="{% url 'boards:item_edit' object.item_id %}">編集する</a></li>
+            <li><a href="{% url 'boards:item_delete' object.item_id %}">削除する</a></li>
+            </ul>
+          </p>
+        </div>
+      </div>
+    
+      <br><br>
+    {% endfor %}
+    </div>
+    <br>
+    {# ページネーション #}
+    <nav aria-label="Page navigation">
+        <ul class="pagination text-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?{% url_replace request 'page' page_obj.previous_page_number %}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">前へ</span>
+              </a>
+            </li>
+          {% endif %}
+      
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="page-item active"><a class="page-link" href="?{% url_replace request 'page' num %}">{{ num }}</a></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?{% url_replace request 'page' num %}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+    
+          
+      
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">次へ</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+    </nav>
+    
+
+{% endblock %}
